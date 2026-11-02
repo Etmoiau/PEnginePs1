@@ -1,0 +1,38 @@
+# Build Artifacts
+/target/
+*.exe
+*.pdb
+
+# PS1 ROMs, ISOs and BIOS (evitar pirataria no repositório)
+*.bin
+*.BIN
+*.cue
+*.CUE
+*.iso
+*.ISO
+*.img
+*.pbp
+*.chd
+bios/
+isos/
+SCPH*.BIN
+scph*.bin
+
+# Save States & Memory Cards
+*.state
+*.mcr
+.states/
+
+# Emulator generated caches & settings
+.covers/
+.stats/
+.emulator_settings.bin
+
+# OS & Editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.tmp
+checkpoints/
+Medal of Honor (USA)/
+enviar_para_github.bat
