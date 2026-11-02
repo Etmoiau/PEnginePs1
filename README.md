@@ -1,87 +1,103 @@
-# 🎮 PEnginePs1 — Emulador de PlayStation 1 (PSX)
+# PEnginePs1
 
-[![Rust](https://img.shields.io/badge/Rust-1.75%2B-orange.svg)](https://www.rust-lang.org/)
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux-lightgrey.svg)]()
-[![FPS](https://img.shields.io/badge/Performance-60.0%20FPS%20Locked-brightgreen.svg)]()
+Emulador de PlayStation 1 (PSX) escrito em Rust, com interface visual para seleção de jogos, suporte a controle de Xbox e teclado, precisão de vértices PGXP, áudio SPU com reverberação e opções de vídeo.
 
-Um emulador de **PlayStation 1 (PSX)** moderno, ultraleve e de alta performance desenvolvido em **Rust**. Apresenta interface Arcade com carrossel 3D, download automático de capas oficiais, suporte completo a controles de **Xbox (XInput)** e teclado, áudio estéreo com reverb por hardware e suporte a **Widescreen 16:9 Anamórfico Real (sem esticar)**.
+> **Importante sobre ISOs e BIOS:** este repositório não contém nenhum arquivo de jogo (ISO/BIN/CUE/CHD) e nenhuma imagem de BIOS do PlayStation. O PEnginePs1 também não baixa nem distribui esses arquivos. Para jogar, cada pessoa precisa fornecer seus próprios arquivos de jogos e sua própria BIOS obtida legalmente, sendo responsável por ter o direito de usá-los de acordo com as leis aplicáveis em seu local.
 
----
+## Estado do projeto e compatibilidade
 
-## ✨ Principais Funcionalidades
+Este emulador foi desenvolvido primordialmente para estudo, experimentação e uso pessoal. O projeto não está 100% completo nem oferece compatibilidade total com toda a biblioteca de títulos do PlayStation 1. Certos jogos podem apresentar falhas visuais, problemas de temporização, áudio imperfeito ou travamentos. O código continua sendo aprimorado de forma contínua.
 
-* **Interface Arcade Intuitiva:** Biblioteca com carrossel de capas 3D, busca dinâmica instantânea, filtros A-Z e histórico de jogo.
-* **Download Automático de Capas:** Baixa e armazena em cache capas oficiais do banco de dados Libretro em segundo plano.
-* **60 FPS Cravados:** Temporização multimídia precisa (`timeBeginPeriod(1)`), rasterização convexa antecipada e barramento em ponteiro sem overhead.
-* **Hack Widescreen 16:9 Real:** Geometria 3D expandida via transformação anamórfica de FOV (0.75 x 1.333 = 1.0), sem achatar nem esticar personagens.
-* **PGXP Subpixel Precision:** Estabiliza vértices e elimina a clássica tremedeira poligonal do PS1 com lookup $O(1)$ de alta velocidade.
-* **Renderização HD & Shaders:**
-  * Resoluções internas: 1x Nativa (240p), 2x HD (480p) e 4x Full HD (960p).
-  * Shaders de vídeo: Pixel Art puro, Bilinear, CRT Scanlines e TV Antiga RF com chiado.
-* **Áudio Estéreo SPU de Alta Fidelidade:** 24 vozes ADSR, decodificação SPU-ADPCM, interpolação gaussiana e processador de eco/reverb por hardware.
-* **Salvar & Carregar Estados (Save State):** 5 slots com prévia rápida, atalhos de teclado e joystick.
-* **Menu In-Game Instantâneo:** Segure START ou aperte ESC dentro do jogo para pausar, salvar/carregar e ajustar opções sem sair da partida.
-* **Build Sem Terminal:** Inicia diretamente como aplicativo nativo limpo sem janela preta de prompt.
+## Recursos
 
----
+- Biblioteca visual com capas de jogos, histórico recente e busca dinâmica.
+- Busca por título, navegação alfabética e filtro por categorias.
+- Suporte a controle de Xbox compatível com XInput e teclado.
+- Modos de vídeo com filtros Bilinear, CRT Scanlines, TV antiga e Pixel Art nativo.
+- Renderização interna nas resoluções 1x (nativa), 2x (HD) e 4x (Full HD).
+- Correção de perspectiva e estabilização de geometria poligonal via PGXP.
+- Suporte a proporção widescreen 16:9 anamórfica sem esticar a imagem.
+- Processador de áudio SPU com 24 vozes, decodificação ADPCM e efeito de reverberação por hardware.
+- Salvamento e carregamento de estados (Save States) com 5 slots disponíveis.
+- Menu de pausa integrado para ajustes em tempo real sem fechar o jogo.
+- Execução como aplicativo nativo do Windows, sem janela de terminal.
 
-## 🕹️ Controles
+## Jogos e BIOS: use seus próprios arquivos
 
-| Ação | Controle de Xbox (XInput) | Teclado USB |
-| :--- | :--- | :--- |
-| **Navegar nos Jogos** | D-Pad / Analógico Esquerdo | Setas (Cima / Baixo / Esq / Dir) |
-| **Abrir Jogo / Confirmar** | Botão A | Enter / Z |
-| **Voltar / Cancelar** | Botão B | ESC / X |
-| **Busca de Jogos** | Botão X | F2 |
-| **Abrir Pasta de Jogos** | Botão Y | F1 |
-| **Alternar Categoria / Filtro** | Gatilho LT | Tab |
-| **Menu de Configurações (Hub)**| START | F3 / M |
-| **Menu In-Game (durante o jogo)** | Segurar START | ESC |
-| **Salvar Estado Rápido** | — | F5 |
-| **Carregar Estado Rápido** | — | F8 |
-| **Modo Janela / Tela Cheia** | — | F11 / Alt + Enter |
-| **Monitor de Hardware (DEV)** | — | F12 (ou `--dev`) |
+Nenhum jogo ou BIOS acompanha o PEnginePs1. Não inclua arquivos proprietários no repositório.
 
----
+No Windows, o emulador cria e busca arquivos automaticamente nestas pastas:
 
-## 🚀 Como Compilar e Executar
+- Pasta de jogos (ISOs):
+```text
+%USERPROFILE%\Documents\meu_psx\isos
+```
+(ou na pasta local `isos` ao lado do executável)
 
-### Pré-requisitos
-* [Rust e Cargo](https://rustup.rs/) (versão estável recomendada)
+- Pasta de BIOS:
+```text
+%USERPROFILE%\Documents\meu_psx\bios
+```
+(ou na pasta local `bios` ao lado do executável)
 
-### Compilação (Release)
-```bash
+Coloque suas imagens de jogos (`.cue` acompanhado de `.bin`, ou `.iso`, `.img`, `.chd`) na pasta de jogos, e a BIOS do PlayStation (como `SCPH1001.BIN`, `scph5501.bin`, etc.) na pasta de BIOS. É possível pressionar **F1** no Hub para escolher outra pasta de jogos ou acessar a opção no menu de configurações (F3 / Start).
+
+## Requisitos
+
+- Windows 10 ou posterior de 64 bits.
+- Rust e Cargo instalados pelo [rustup](https://rustup.rs/).
+- Dispositivo de som compatível para saída de áudio estéreo a 44.1 kHz.
+
+## Compilar e executar
+
+Abra um terminal na pasta do projeto e execute:
+
+```powershell
+cargo run --release
+```
+
+Para apenas compilar:
+
+```powershell
 cargo build --release
 ```
-O executável compilado estará localizado em:
-```text
-target/release/PEnginePs1.exe
-```
 
-### Onde Colocar os Jogos e a BIOS
-O emulador cria automaticamente pastas organizadas em **Documentos**:
-* `Documentos\PEnginePs1\bios` (ou pasta local `bios/`): Coloque a BIOS (ex: `SCPH1001.BIN`).
-* `Documentos\PEnginePs1\isos` (ou pasta local `isos/`): Coloque seus jogos (`.cue`, `.bin`, `.iso`, `.chd`, `.pbp`).
+O executável compilado ficará em `target\release\PEnginePs1.exe`.
 
-Você também pode abrir essas pastas a qualquer momento pelo menu de opções do próprio emulador!
+## Controles
 
----
+### Hub
 
-## 🛠️ Arquitetura do Sistema
+| Ação | Teclado | Gamepad Xbox |
+|---|---|---|
+| Navegar pela biblioteca | Setas | Direcional ou analógico esquerdo |
+| Abrir / Confirmar | Enter ou Z | A |
+| Voltar | Esc | B |
+| Buscar | F2 ou X | X |
+| Escolher pasta de jogos | F1 ou Y | Y |
+| Abrir configurações | F3 ou M | Menu / Start |
+| Trocar categoria | Tab | LT |
+| Saltar entre letras | Page Up / Page Down | LB / RB |
 
-* `src/cpu.rs`: Emulação completa do MIPS R3000A com pipeline de load delay e I-Cache.
-* `src/gte.rs`: Geometry Transform Engine (Coprocessador 2) para matemática 3D e perspectiva.
-* `src/gpu.rs`: GPU do PS1 com suporte a modos 15/24-bit, dithering, PGXP e rasterização de triângulos convexos.
-* `src/spu.rs`: Processador de som de 24 canais, ADSR, decodificação ADPCM e DSP de Reverb.
-* `src/cdrom.rs`: Controlador de drive de CD-ROM com comandos assíncronos e leitura de setores.
-* `src/dma.rs`: Controlador de DMA de 7 canais (GPU, SPU, CD-ROM, MDEC, OTC).
-* `src/mdec.rs`: Decodificador Macroblock para vídeos FMV e descompressão DCT.
-* `src/hub.rs`: Interface gráfica Arcade com renderização de carrossel, capas e menus.
-* `src/pgxp.rs`: Cache associativo de 4 vias $O(1)$ para subpixel precision.
+### Durante o jogo
 
----
+| Ação PS1 | Teclado | Gamepad Xbox |
+|---|---|---|
+| Cruz (X) | Z | A |
+| Círculo (O) | X | B |
+| Quadrado (□) | A | X |
+| Triângulo (△) | S | Y |
+| Direcional | Setas | Direcional ou analógico esquerdo |
+| L1 / R1 | Q / E | LB / RB |
+| L2 / R2 | 1 / 3 | LT / RT |
+| Select / Start | Espaço / Enter | Back / Start |
+| Pausar e abrir menu | Esc | Segurar Start |
+| Alternar modo analógico | F5 | — |
+| Alternar janela / tela cheia | F11 ou Alt + Enter | — |
+| Monitor de hardware (dev) | F12 (ou parâmetro `--dev`) | — |
 
-## 📄 Licença
+Os slots de save state podem ser salvos e carregados diretamente pelo menu de pausa (Esc ou segurando Start).
 
-Distribuído sob a licença MIT. Consulte `LICENSE` para mais detalhes.
+## Licença
+
+O código do PEnginePs1 está sob a licença [MIT](LICENSE). A licença do código não inclui direitos sobre marcas da Sony, jogos, BIOS, capas ou outros materiais de terceiros.
